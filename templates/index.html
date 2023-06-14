@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Create your Lesson Plan</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+    html {
+      height: 100%;
+      /*Image only BG fallback*/
+      /*background = gradient + image pattern combo*/
+      background: linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
+    }
+
+    body {
+      font-family: Montserrat, Arial, Verdana;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .left-side {
+      flex: 1;
+      margin-right: 20px;
+      border-radius: 10px;
+      background-color: white;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .right-side {
+      flex: 1;
+      border-radius: 10px;
+      background-color: white;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #msform {
+      width: 100%;
+      text-align: left;
+      position: relative;
+    }
+
+    #msform fieldset {
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      color: #2C3E50;
+      font-size: 14px;
+      box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    }
+
+    #msform input {
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: Montserrat;
+      color: #2C3E50;
+      font-size: 14px;
+    }
+
+    #msform .action-button {
+      width: 150px;
+      background: #27AE60;
+      font-weight: bold;
+      color: white;
+      border: 0 none;
+      border-radius: 1px;
+      cursor: pointer;
+      padding: 10px;
+      margin: 10px 0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #msform .action-button:hover,
+    #msform .action-button:focus {
+      box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+    }
+
+    .fs-title {
+      font-size: 25px;
+      text-transform: uppercase;
+      color: #2C3E50;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .fs-subtitle {
+      font-weight: normal;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .result {
+      padding: 20px;
+      background: white;
+      border-radius: 3px;
+      box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loading-circle {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <script>
+    var expanded = false;
+
+    function showCheckboxes() {
+      var checkboxes = document.getElementById("checkboxes");
+      if (!expanded) {
+        checkboxes.style.display = "block";
+        expanded = true;
+      } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+      }
+    }
+
+    function showLoadingCircle() {
+      var loadingOverlay = document.getElementById("loading-overlay");
+      loadingOverlay.style.display = "flex";
+    }
+  </script>
+</head>
+
+<body style="background: linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));">
+  <div class="container">
+    <div class="left-side">
+      <form action="/" method="post" id="msform" onsubmit="showLoadingCircle()">
+        <h3 class="fs-title">Enter Details</h3>
+        <fieldset>
+          <label>Lesson Title:</label>
+          <input type="text" name="LessonTitle" placeholder="Enter Lesson Title" required>
+          <label>Teacher Name:</label>
+          <input type="text" name="TeacherName" placeholder="Enter Teacher's Name" required>
+          <label>Subject:</label>
+          <input type="text" name="Subject" placeholder="Enter Subject" required />
+          <br>
+          <label>Grade: </label>
+          <input type="text" name="Grade" placeholder="Enter Grade" required />
+          <br>
+          <label>Date: </label>
+          <input type="date" name="Date" placeholder="Enter Date" required />
+          <br>
+          <label>Duration: </label>
+          <input type="text" name="Duration" placeholder="Enter Duration" required />
+          <br>
+          <label>Key Vocabulary: </label>
+          <input type="text" name="KeyVocab" placeholder="Enter Key Vocabulary" required />
+          <br>
+          <label>Supporting Materials and Resources: </label>
+          <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxes()">
+              <select>
+                <option>-- Select --</option>
+              </select>
+              <div class="overSelect"></div>
+            </div>
+            <div id="checkboxes">
+              <label for="LiveWksts">
+                <input type="checkbox" id="LiveWksts" name="materials" value="Live Worksheets" />Live Worksheets</label>
+              <label for="SmartBoard">
+                <input type="checkbox" id="SmartBoard" name="materials" value="Smart Board" />Smart Board</label>
+              <label for="Tablets">
+                <input type="checkbox" id="Tablets" name="materials" value="Tablets" />Tablets</label>
+              <label for="Video">
+                <input type="checkbox" id="Video" name="materials" value="Video" />Video</label>
+              <label for="OnlineEdRes">
+                <input type="checkbox" id="OnlineEdRes" name="materials" value="Online Educational Resources" />Online
+                Educational Resources</label>
+              <label for="Laptops">
+                <input type="checkbox" id="Laptops" name="materials" value="Laptops" />Laptops</label>
+              <label for="Microsoft">
+                <input type="checkbox" id="Microsoft" name="materials" value="Microsoft Office" />Microsoft
+                Office</label>
+              <label for="TDSLMS">
+                <input type="checkbox" id="TDS" name="materials" value="TDS LMS" />TDS LMS</label>
+              <label for="Other">
+                <input type="checkbox" id="Other" name="materials" value="Other" />Other</label>
+            </div>
+          </div>
+          <br>
+          <input type="submit" value="Generate Plan" class="action-button" />
+          <div id="loading-overlay" style="display: none;">
+            <div class="loading-circle"></div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="right-side">
+      <h3 class="fs-title">Lesson Plan</h3>
+      {% if not result %}
+      <p>Once you click on the Generate button, Please wait until the lesson plan is ready!</p>
+      {% endif %}
+      {% if result %}
+      {{ result }}
+      <br><br>
+      <a href="{{ url_for('download_file', filename=filename) }}" class="btn btn-primary">Download File</a>
+      {% endif %}
+      <br>
+      <br>
+      {% if speech_file %}
+      <audio controls autoplay>
+        <source src="{{ url_for('static', filename=speech_file) }}" type="audio/mpeg">
+      </audio>
+      {% endif %}
+    </div>
+  </div>
+</body>
+
+</html>
