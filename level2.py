@@ -6,7 +6,7 @@ from flask import Flask, redirect, render_template, request, url_for, send_file
 
 app = Flask(__name__)
 openai.api_key = ""
-i = "3"
+i = "4"
 
 @app.route("/", methods=("GET", "POST"))
 def index():
